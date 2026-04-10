@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Cargo {
+  COMUM
+  ADMINISTRADOR
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  nome  String
+  senha String
+  cargo Cargo  @default(COMUM)
+
+  createdAt DateTime @default(now())
+}
+
+model Cidade {
+  id     Int    @id @default(autoincrement())
+  nome   String @unique
+  estado String
+
+  pontosTuristicos PontoTuristico[]
+  eventos          Evento[]
+
+  createdAt DateTime @default(now())
+}
+
+model PontoTuristico {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  descricao   String
+  informacoes String
+  destaques   String
+  latitude    Float
+  longitude   Float
+  imagemUrl   String
+  createdAt   DateTime @default(now())
+
+  cidade   Cidade @relation(fields: [cidadeId], references: [id])
+  cidadeId Int
+}
+
+model Evento {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  descricao   String
+  data        DateTime
+  horario     String
+  informacoes String
+  latitude    Float
+  longitude   Float
+  imagemUrl   String
+  createdAt   DateTime @default(now())
+
+  cidade   Cidade @relation(fields: [cidadeId], references: [id])
+  cidadeId Int
+}
