@@ -5,8 +5,8 @@ import { eventosRoutes } from "./eventos-routes"
 
 const routes = Router()
 //public
-routes.use("/usuarios", usuariosRoutes)
-routes.use("/pontos-turisticos", pontosTuristicosRoutes)
-routes.use("/eventos", eventosRoutes)
+routes.use("/api/usuarios", usuariosRoutes)
+routes.use("/api/pontos-turisticos", pontosTuristicosRoutes)
+routes.use("/api/eventos", eventosRoutes)
 
 export { routes }

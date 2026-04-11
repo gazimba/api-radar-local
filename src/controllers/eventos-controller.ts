@@ -1,37 +1,75 @@
-import type{ Request, Response } from "express";
+import type { Request, Response } from "express";
 import { z } from "zod";
-import { hash } from "bcrypt";
 import { prisma } from "@/database/prisma";
-import { AppError } from "@/util/AppError";
 
 class EventosController {
     async create(request: Request, response: Response) {
-        const createUsuarioSchema = z.object({
-            nome: z.string().min(1, { message: "O nome é obrigatório" }),
-            email: z.email({ message: "E-mail inválido" }),
-            password: z.string().min(6, { message: "A senha deve conter no mínimo 6 caracteres" }),
+        const createEventoSchema = z.object({
+            nome: z.string().min(2),
+            descricao: z.string().max(200),
+            data: z.string(), 
+            horario: z.string(),
+            informacoes: z.string().max(200),
+            latitude: z.number(),
+            longitude: z.number(),
         });
 
-        const { nome, email, password } = createUsuarioSchema.parse(request.body);
+        const { nome, descricao, data, horario, informacoes, latitude, longitude } =
+            createEventoSchema.parse(request.body);
 
-        const userExists = await prisma.user.findFirst({ where: { email } });
-        if (userExists) {
-            throw new AppError("Esse e-mail já está em uso", 409);
-        }
-
-        const hashedPassword = await hash(password, 8);
-
-        await prisma.user.create({
+        await prisma.evento.create({
             data: {
                 nome,
-                email,
-                senha: hashedPassword,
+                descricao,
+                data: new Date(data), 
+                horario,
+                informacoes,
+                latitude,
+                longitude
             }
         });
 
-        response.status(201).json({ message: "Usuário criado." });
+        response.status(201).json({ message: "Evento criado com sucesso." });
     }
 
+    async listAll(request: Request, response: Response) {
+        const eventos = await prisma.evento.findMany({
+            orderBy: {
+                data: "asc" 
+            }
+        });
+        response.json(eventos);
+    }
+
+    async getById(request: Request, response: Response) {
+        const { id } = request.params;
+        const evento = await prisma.evento.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if (!evento) {
+            return response.status(404).json({ message: "Evento não encontrado." });
+        }
+        response.json(evento);
+    }
+
+    async delete(request: Request, response: Response) {
+        const { id } = request.params;
+
+        const eventoExistente = await prisma.evento.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if (!eventoExistente) {
+            return response.status(404).json({ message: "Evento não encontrado." });
+        }
+
+        await prisma.evento.delete({
+            where: { id: Number(id) }
+        });
+
+        response.json({ message: "Evento deletado com sucesso." });
+    }
 }
 
 export { EventosController };

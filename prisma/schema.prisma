@@ -26,17 +26,6 @@ model User {
   createdAt DateTime @default(now())
 }
 
-model Cidade {
-  id     Int    @id @default(autoincrement())
-  nome   String @unique
-  estado String
-
-  pontosTuristicos PontoTuristico[]
-  eventos          Evento[]
-
-  createdAt DateTime @default(now())
-}
-
 model PontoTuristico {
   id          Int      @id @default(autoincrement())
   nome        String
@@ -45,11 +34,8 @@ model PontoTuristico {
   destaques   String
   latitude    Float
   longitude   Float
-  imagemUrl   String
   createdAt   DateTime @default(now())
 
-  cidade   Cidade @relation(fields: [cidadeId], references: [id])
-  cidadeId Int
 }
 
 model Evento {
@@ -61,9 +47,5 @@ model Evento {
   informacoes String
   latitude    Float
   longitude   Float
-  imagemUrl   String
   createdAt   DateTime @default(now())
-
-  cidade   Cidade @relation(fields: [cidadeId], references: [id])
-  cidadeId Int
 }
