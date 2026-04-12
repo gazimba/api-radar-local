@@ -6,10 +6,10 @@ class EventosController {
     async create(request: Request, response: Response) {
         const createEventoSchema = z.object({
             nome: z.string().min(2),
-            descricao: z.string().max(200),
+            descricao: z.string(),
             data: z.string(),
             horario: z.string(),
-            informacoes: z.string().max(200),
+            informacoes: z.string(),
             latitude: z.number(),
             longitude: z.number(),
             status: z.enum(["PENDENTE", "APROVADO", "REJEITADO"]).default("APROVADO")

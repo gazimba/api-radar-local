@@ -6,9 +6,9 @@ class PontosTuristicosController {
     async create(request: Request, response: Response) {
         const createPontoSchema = z.object({
             nome: z.string().min(2),
-            descricao: z.string().max(200),
-            destaques: z.string().max(200),
-            informacoes: z.string().max(200),
+            descricao: z.string(),
+            destaques: z.string(),
+            informacoes: z.string(),
             latitude: z.number(),
             longitude: z.number(),
             status: z.enum(["PENDENTE", "APROVADO", "REJEITADO"]).default("APROVADO")
