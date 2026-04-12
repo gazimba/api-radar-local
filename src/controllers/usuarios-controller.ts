@@ -7,7 +7,7 @@ class UsuariosController {
     async create(request: Request, response: Response) {
         const createUsuarioSchema = z.object({
             nome: z.string().min(1, { message: "O nome é obrigatório" }),
-            email: z.string().email({ message: "E-mail inválido" }),
+            email: z.email({ message: "E-mail inválido" }),
             senha: z.string().min(6, { message: "A senha deve conter no mínimo 6 caracteres" }),
         });
 
@@ -32,7 +32,7 @@ class UsuariosController {
         return response.status(201).json({ message: "Usuário criado com sucesso." });
     }
 
-    async listAll(request: Request, response: Response) {
+    async listAll(_request: Request, response: Response) {
         const usuarios = await prisma.user.findMany({
             select: {
                 id: true,

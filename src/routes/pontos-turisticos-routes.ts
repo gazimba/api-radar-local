@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { PontosTuristicosController } from "@/controllers/pontos-turisticos-controller";
+import { ensureAuthenticated } from "@/middlewares/ensure-authenticated";
 
 const pontosTuristicosRoutes = Router();
 const pontosTuristicosController = new PontosTuristicosController();
-
-pontosTuristicosRoutes.post("/", pontosTuristicosController.create);
+//Pública
 pontosTuristicosRoutes.get("/", pontosTuristicosController.listAll);
 pontosTuristicosRoutes.get("/:id", pontosTuristicosController.getById);
-pontosTuristicosRoutes.delete("/:id", pontosTuristicosController.delete);
+//Privada
+pontosTuristicosRoutes.post("/", ensureAuthenticated, pontosTuristicosController.create);
+pontosTuristicosRoutes.delete("/:id", ensureAuthenticated, pontosTuristicosController.delete);
 
 export { pontosTuristicosRoutes };

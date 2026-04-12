@@ -1,12 +1,14 @@
-import { Router } from "express"
-import { usuariosRoutes } from "./usuarios-routes"
-import { pontosTuristicosRoutes } from "./pontos-turisticos-routes"
-import { eventosRoutes } from "./eventos-routes"
+import { Router } from "express";
+import { usuariosRoutes } from "./usuarios-routes";
+import { pontosTuristicosRoutes } from "./pontos-turisticos-routes";
+import { eventosRoutes } from "./eventos-routes";
+import { sessionsRoutes } from "./sessions-routes";
 
-const routes = Router()
-//public
-routes.use("/api/usuarios", usuariosRoutes)
-routes.use("/api/pontos-turisticos", pontosTuristicosRoutes)
-routes.use("/api/eventos", eventosRoutes)
+const routes = Router();
 
-export { routes }
+routes.use("/api/sessions", sessionsRoutes);
+routes.use("/api/usuarios", usuariosRoutes);
+routes.use("/api/pontos-turisticos", pontosTuristicosRoutes);
+routes.use("/api/eventos", eventosRoutes);
+
+export { routes };
