@@ -12,7 +12,7 @@ class EventosController {
             informacoes: z.string().max(200),
             latitude: z.number(),
             longitude: z.number(),
-            status: z.enum(["PENDENTE", "APROVADO", "REJEITADO"]).default("PENDENTE")
+            status: z.enum(["PENDENTE", "APROVADO", "REJEITADO"]).default("APROVADO")
         });
 
         const { nome, descricao, data, horario, informacoes, latitude, longitude, status } =
