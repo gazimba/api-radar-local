@@ -35,9 +35,9 @@ model User {
 model PontoTuristico {
   id          Int      @id @default(autoincrement())
   nome        String
-  descricao   String
-  informacoes String
-  destaques   String
+  descricao   String @db.Text
+  informacoes String @db.Text
+  destaques   String @db.Text
   latitude    Float
   longitude   Float
   status      Status @default(PENDENTE)
@@ -48,10 +48,10 @@ model PontoTuristico {
 model Evento {
   id          Int      @id @default(autoincrement())
   nome        String
-  descricao   String
+  descricao   String @db.Text
   data        DateTime
   horario     String
-  informacoes String
+  informacoes String @db.Text
   latitude    Float
   longitude   Float
   status      Status @default(PENDENTE)
