@@ -5,7 +5,8 @@ import { routes } from './routes';
 const app = express()
 
 const allowedOrigins = [
-    'http://localhost:5173'
+    'http://localhost:5173', 
+    'https://radar-local-4mckjxugt-gazimbas-projects.vercel.app/' 
 ];
 
 app.use(cors({
