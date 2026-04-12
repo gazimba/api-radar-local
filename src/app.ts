@@ -6,7 +6,7 @@ const app = express()
 
 const allowedOrigins = [
     'http://localhost:5173', 
-    'https://radar-local-beta.vercel.app/' 
+    'https://radar-local-beta.vercel.app' 
 ];
 
 app.use(cors({
