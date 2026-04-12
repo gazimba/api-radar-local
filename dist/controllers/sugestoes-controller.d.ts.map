@@ -1,0 +1,1 @@
+{"version":3,"file":"sugestoes-controller.d.ts","sourceRoot":"","sources":["../../src/controllers/sugestoes-controller.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAIjD,qBAAa,mBAAmB;IACtB,MAAM,CAAC,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,QAAQ;IAkD3C,OAAO,CAAC,QAAQ,EAAE,OAAO,EAAE,QAAQ,EAAE,QAAQ;CAOtD"}
