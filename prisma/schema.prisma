@@ -16,6 +16,12 @@ enum Cargo {
   ADMINISTRADOR
 }
 
+enum Status {
+  PENDENTE
+  APROVADO
+  REJEITADO
+}
+
 model User {
   id    Int    @id @default(autoincrement())
   email String @unique
@@ -34,6 +40,7 @@ model PontoTuristico {
   destaques   String
   latitude    Float
   longitude   Float
+  status      Status @default(PENDENTE)
   createdAt   DateTime @default(now())
 
 }
@@ -47,5 +54,6 @@ model Evento {
   informacoes String
   latitude    Float
   longitude   Float
+  status      Status @default(PENDENTE)
   createdAt   DateTime @default(now())
 }

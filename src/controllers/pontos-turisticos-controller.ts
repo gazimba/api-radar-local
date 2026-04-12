@@ -11,9 +11,10 @@ class PontosTuristicosController {
             informacoes: z.string().max(200),
             latitude: z.number(),
             longitude: z.number(),
+            status: z.enum(["PENDENTE", "APROVADO", "REJEITADO"]).default("PENDENTE")
         });
 
-        const { nome, descricao, destaques, informacoes, latitude, longitude } =
+        const { nome, descricao, destaques, informacoes, latitude, longitude, status } =
             createPontoSchema.parse(request.body);
 
         await prisma.pontoTuristico.create({
@@ -23,15 +24,34 @@ class PontosTuristicosController {
                 destaques,
                 informacoes,
                 latitude,
-                longitude
+                longitude,
+                status
             }
         });
 
         response.status(201).json({ message: "Ponto turístico criado." });
     }
 
-    async listAll(request: Request, response: Response) {
-        const pontos = await prisma.pontoTuristico.findMany();
+    async listAll(_request: Request, response: Response) {
+        const pontos = await prisma.pontoTuristico.findMany({
+            orderBy: {
+                createdAt: "asc"
+            },
+            where: {
+                status: "APROVADO"
+            }
+        });
+        response.json(pontos);
+    }
+    async listAllPendente(_request: Request, response: Response) {
+        const pontos = await prisma.pontoTuristico.findMany({
+            orderBy: {
+                createdAt: "asc"
+            },
+            where: {
+                status: "PENDENTE"
+            }
+        });
         response.json(pontos);
     }
 
@@ -53,6 +73,15 @@ class PontosTuristicosController {
             where: { id: Number(id) }
         });
         response.json({ message: "Ponto deletado." });
+    }
+
+    async aprovar(request: Request, response: Response) {
+        const { id } = request.params;
+        await prisma.pontoTuristico.update({
+            where: { id: Number(id) },
+            data: { status: "APROVADO" }
+        });
+        return response.json({ message: "Ponto turístico aprovado!" });
     }
 }
 

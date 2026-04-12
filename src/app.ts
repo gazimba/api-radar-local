@@ -16,7 +16,7 @@ app.use(cors({
             callback(new Error('Acesso não permitido pela política de CORS'))
         }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Authorization"],
     credentials: true
 }));
