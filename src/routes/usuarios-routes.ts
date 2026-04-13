@@ -6,8 +6,9 @@ const usuariosRoutes = Router();
 const usuariosController = new UsuariosController();
 
 //Pública
-usuariosRoutes.post("/", usuariosController.create);
+
 //Privada
+usuariosRoutes.post("/", ensureAuthenticated, usuariosController.create);
 usuariosRoutes.get("/", ensureAuthenticated, usuariosController.listAll);
 usuariosRoutes.get("/:id", ensureAuthenticated, usuariosController.getById);
 usuariosRoutes.delete("/:id", ensureAuthenticated, usuariosController.delete);
