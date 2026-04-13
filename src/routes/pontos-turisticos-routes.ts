@@ -12,5 +12,6 @@ pontosTuristicosRoutes.post("/", ensureAuthenticated, pontosTuristicosController
 pontosTuristicosRoutes.delete("/:id", ensureAuthenticated, pontosTuristicosController.delete);
 pontosTuristicosRoutes.get("/pendentes", ensureAuthenticated, pontosTuristicosController.listAllPendente);
 pontosTuristicosRoutes.patch("/:id/aprovar", ensureAuthenticated, pontosTuristicosController.aprovar);
+pontosTuristicosRoutes.put("/:id", ensureAuthenticated, pontosTuristicosController.update);
 
 export { pontosTuristicosRoutes };

@@ -96,6 +96,49 @@ class EventosController {
         });
         return response.json({ message: "Evento aprovado!" });
     }
+
+    async update(request: Request, response: Response) {
+        const { id } = request.params;
+
+        const updateEventoSchema = z.object({
+            nome: z.string().min(2),
+            descricao: z.string(),
+            data: z.string(),
+            horario: z.string(),
+            informacoes: z.string(),
+            latitude: z.number(),
+            longitude: z.number(),
+        });
+
+        try {
+            const data = updateEventoSchema.parse(request.body);
+
+            const eventoExistente = await prisma.evento.findUnique({
+                where: { id: Number(id) }
+            });
+
+            if (!eventoExistente) {
+                return response.status(404).json({ message: "Evento não encontrado." });
+            }
+
+            await prisma.evento.update({
+                where: { id: Number(id) },
+                data: {
+                    nome: data.nome,
+                    descricao: data.descricao,
+                    data: new Date(data.data),
+                    horario: data.horario,
+                    informacoes: data.informacoes,
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                }
+            });
+
+            return response.json({ message: "Evento atualizado com sucesso." });
+        } catch (error) {
+            return response.status(400).json({ message: "Erro de validação. Verifique os dados enviados." });
+        }
+    }
 }
 
 export { EventosController };

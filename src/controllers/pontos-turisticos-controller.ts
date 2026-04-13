@@ -83,6 +83,47 @@ class PontosTuristicosController {
         });
         return response.json({ message: "Ponto turístico aprovado!" });
     }
+
+    async update(request: Request, response: Response) {
+        const { id } = request.params;
+
+        const updatePontoSchema = z.object({
+            nome: z.string().min(2),
+            descricao: z.string(),
+            destaques: z.string(),
+            informacoes: z.string(),
+            latitude: z.number(),
+            longitude: z.number(),
+        });
+
+        try {
+            const data = updatePontoSchema.parse(request.body);
+
+            const pontoExistente = await prisma.pontoTuristico.findUnique({
+                where: { id: Number(id) }
+            });
+
+            if (!pontoExistente) {
+                return response.status(404).json({ message: "Ponto não encontrado." });
+            }
+
+            await prisma.pontoTuristico.update({
+                where: { id: Number(id) },
+                data: {
+                    nome: data.nome,
+                    descricao: data.descricao,
+                    destaques: data.destaques,
+                    informacoes: data.informacoes,
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                }
+            });
+
+            return response.json({ message: "Ponto turístico atualizado com sucesso." });
+        } catch (error) {
+            return response.status(400).json({ message: "Erro de validação. Verifique os dados enviados." });
+        }
+    }
 }
 
 export { PontosTuristicosController };

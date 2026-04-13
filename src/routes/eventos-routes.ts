@@ -12,5 +12,6 @@ eventosRoutes.post("/", ensureAuthenticated, eventosController.create);
 eventosRoutes.delete("/:id", ensureAuthenticated, eventosController.delete);
 eventosRoutes.get("/pendentes", ensureAuthenticated, eventosController.listAllPendente);
 eventosRoutes.patch("/:id/aprovar", ensureAuthenticated, eventosController.aprovar);
+eventosRoutes.put("/:id", ensureAuthenticated, eventosController.update);
 
 export { eventosRoutes };
