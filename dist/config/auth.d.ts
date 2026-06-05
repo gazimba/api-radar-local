@@ -1,7 +1,8 @@
+import type { StringValue } from "ms";
 declare const _default: {
     jwt: {
         secret: string;
-        expiresIn: any;
+        expiresIn: StringValue;
     };
 };
 export default _default;

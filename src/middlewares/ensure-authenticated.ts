@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import authConfig from "../config/auth";
+import { prisma } from "../database/prisma";
 
 const { verify } = jwt;
 
@@ -8,7 +9,7 @@ interface TokenPayload {
     sub: string;
 }
 
-export function ensureAuthenticated(
+export async function ensureAuthenticated(
     request: Request,
     response: Response,
     next: NextFunction
@@ -33,10 +34,18 @@ export function ensureAuthenticated(
 
     try {
         const decoded = verify(token, authConfig.jwt.secret) as TokenPayload;
+        const userId = Number(decoded.sub);
 
-        request.user = {
-            id: Number(decoded.sub),
-        };
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true, ativo: true },
+        });
+
+        if (!user || !user.ativo) {
+            return response.status(401).json({ message: "Conta inativa ou não encontrada" });
+        }
+
+        request.user = { id: user.id };
 
         return next();
     } catch {

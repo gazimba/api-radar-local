@@ -1,7 +1,12 @@
-import { SessionsController } from "../controllers/sessions-controller";
-import { Router } from "express";
-const sessionsRoutes = Router();
-const sessionsController = new SessionsController();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sessionsRoutes = void 0;
+const sessions_controller_1 = require("../controllers/sessions-controller");
+const express_1 = require("express");
+const sessionsRoutes = (0, express_1.Router)();
+exports.sessionsRoutes = sessionsRoutes;
+const sessionsController = new sessions_controller_1.SessionsController();
 sessionsRoutes.post("/", sessionsController.create);
-export { sessionsRoutes };
+sessionsRoutes.post("/google", sessionsController.google);
+sessionsRoutes.post("/google/vincular", sessionsController.vincularGoogle);
 //# sourceMappingURL=sessions-routes.js.map

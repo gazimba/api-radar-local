@@ -1,0 +1,1 @@
+{"version":3,"file":"ativacao-controller.d.ts","sourceRoot":"","sources":["../../src/controllers/ativacao-controller.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAGjD,cAAM,kBAAkB;IACd,MAAM,CAAC,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,QAAQ;CAyBpD;AAED,OAAO,EAAE,kBAAkB,EAAE,CAAC"}

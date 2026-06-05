@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaPg } from "@prisma/adapter-pg";
 export declare const prisma: PrismaClient<{
-    adapter: PrismaMariaDb;
-    log: "query"[];
-}, "query", import("@prisma/client/runtime/client").DefaultArgs>;
+    adapter: PrismaPg;
+}, never, import("@prisma/client/runtime/client").DefaultArgs>;
 //# sourceMappingURL=prisma.d.ts.map

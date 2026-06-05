@@ -13,6 +13,7 @@ datasource db {
 
 enum Cargo {
   COMUM
+  MODERADOR
   ADMINISTRADOR
 }
 
@@ -22,38 +23,179 @@ enum Status {
   REJEITADO
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  email String @unique
-  nome  String
-  senha String
-  cargo Cargo  @default(COMUM)
+enum CategoriaPonto {
+  PONTO_TURISTICO
+  HOTEL_POUSADA
+  BAR_RESTAURANTE
+}
 
+model User {
+  id             Int     @id @default(autoincrement())
+  email          String  @unique
+  nome           String
+  senha          String?
+  cargo          Cargo   @default(COMUM)
+  ativo          Boolean @default(false)
+  tokenAtivacao      String?   @unique
+  tokenResetSenha    String?   @unique
+  tokenResetExpira   DateTime?
+  googleId           String?   @unique
+  foto               String?
+  silenciadoAte      DateTime?
+
+  createdAt   DateTime     @default(now())
+  comentarios Comentario[]
+  logs        LogAcao[]
+  reports     ReportComentario[]
+  sugestoesPontos PontoTuristico[] @relation("SugestoesPontos")
+  sugestoesEventos Evento[]        @relation("SugestoesEventos")
+}
+
+model Cidade {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  estado    String
+  slug      String   @unique
+  ativa     Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  pontosTuristicos PontoTuristico[]
+  eventos          Evento[]
+  links            LinkCidade[]
 }
 
 model PontoTuristico {
-  id          Int      @id @default(autoincrement())
-  nome        String
-  descricao   String @db.Text
-  informacoes String @db.Text
-  destaques   String @db.Text
-  latitude    Float
-  longitude   Float
-  status      Status @default(PENDENTE)
-  createdAt   DateTime @default(now())
+  id                   Int      @id @default(autoincrement())
+  nome                 String
+  descricao            String   @db.Text
+  informacoes          String   @db.Text
+  destaques            String   @db.Text
+  endereco             String?
+  horarioFuncionamento String?
+  telefone             String?
+  site                 String?
+  latitude             Float
+  longitude            Float
+  categoria            CategoriaPonto @default(PONTO_TURISTICO)
+  status               Status   @default(PENDENTE)
+  ativo                Boolean  @default(true)
+  cidadeId             Int
+  sugestorId           Int?
+  createdAt            DateTime @default(now())
 
+  cidade      Cidade       @relation(fields: [cidadeId], references: [id])
+  sugestor    User?        @relation("SugestoesPontos", fields: [sugestorId], references: [id], onDelete: SetNull)
+  imagens     Imagem[]
+  comentarios Comentario[]
+  links       LinkUtil[]
+
+  @@index([cidadeId])
+  @@index([status])
+  @@index([ativo])
 }
 
 model Evento {
   id          Int      @id @default(autoincrement())
   nome        String
-  descricao   String @db.Text
+  descricao   String   @db.Text
   data        DateTime
   horario     String
-  informacoes String @db.Text
+  local       String?
+  link        String?
+  gratuito    Boolean  @default(false)
+  informacoes String   @db.Text
   latitude    Float
   longitude   Float
-  status      Status @default(PENDENTE)
+  status      Status   @default(PENDENTE)
+  ativo       Boolean  @default(true)
+  cidadeId    Int
+  sugestorId  Int?
   createdAt   DateTime @default(now())
+
+  cidade      Cidade       @relation(fields: [cidadeId], references: [id])
+  sugestor    User?        @relation("SugestoesEventos", fields: [sugestorId], references: [id], onDelete: SetNull)
+  imagens     Imagem[]
+  comentarios Comentario[]
+  links       LinkUtil[]
+
+  @@index([cidadeId])
+  @@index([status])
+  @@index([ativo])
+}
+
+model Comentario {
+  id               Int      @id @default(autoincrement())
+  texto            String   @db.Text
+  userId           Int
+  pontoTuristicoId Int?
+  eventoId         Int?
+  createdAt        DateTime @default(now())
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pontoTuristico PontoTuristico? @relation(fields: [pontoTuristicoId], references: [id], onDelete: Cascade)
+  evento         Evento?         @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  reports        ReportComentario[]
+
+  @@index([userId])
+  @@index([pontoTuristicoId])
+  @@index([eventoId])
+}
+
+model ReportComentario {
+  id           Int        @id @default(autoincrement())
+  comentarioId Int
+  userId       Int
+  motivo       String?
+  createdAt    DateTime   @default(now())
+
+  comentario Comentario @relation(fields: [comentarioId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([comentarioId, userId])
+}
+
+model LogAcao {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  acao      String
+  detalhes  String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LinkCidade {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  url       String
+  ordem     Int      @default(0)
+  cidadeId  Int
+  createdAt DateTime @default(now())
+
+  cidade Cidade @relation(fields: [cidadeId], references: [id], onDelete: Cascade)
+}
+
+model LinkUtil {
+  id               Int      @id @default(autoincrement())
+  titulo           String
+  url              String
+  pontoTuristicoId Int?
+  eventoId         Int?
+  createdAt        DateTime @default(now())
+
+  pontoTuristico PontoTuristico? @relation(fields: [pontoTuristicoId], references: [id], onDelete: Cascade)
+  evento         Evento?         @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+}
+
+model Imagem {
+  id               Int      @id @default(autoincrement())
+  url              String
+  publicId         String   @unique
+  capa             Boolean  @default(false)
+  pontoTuristicoId Int?
+  eventoId         Int?
+  createdAt        DateTime @default(now())
+
+  pontoTuristico PontoTuristico? @relation(fields: [pontoTuristicoId], references: [id], onDelete: Cascade)
+  evento         Evento?         @relation(fields: [eventoId], references: [id], onDelete: Cascade)
 }

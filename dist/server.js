@@ -1,6 +1,7 @@
-import 'dotenv/config';
-import { app } from "./app";
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-console.log(PORT);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config");
+const app_1 = require("./app");
+const PORT = process.env.PORT || 3000;
+app_1.app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 //# sourceMappingURL=server.js.map
