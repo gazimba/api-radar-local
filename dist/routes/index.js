@@ -16,6 +16,7 @@ const logs_routes_1 = require("./logs-routes");
 const busca_routes_1 = require("./busca-routes");
 const links_routes_1 = require("./links-routes");
 const links_cidade_routes_1 = require("./links-cidade-routes");
+const stats_routes_1 = require("./stats-routes");
 const routes = (0, express_1.Router)();
 exports.routes = routes;
 routes.use("/api/sessions", sessions_routes_1.sessionsRoutes);
@@ -32,4 +33,5 @@ routes.use("/api/logs", logs_routes_1.logsRoutes);
 routes.use("/api/busca", busca_routes_1.buscaRoutes);
 routes.use("/api/links", links_routes_1.linksRoutes);
 routes.use("/api/links-cidade", links_cidade_routes_1.linksCidadeRoutes);
+routes.use("/api/stats", stats_routes_1.statsRoutes);
 //# sourceMappingURL=index.js.map

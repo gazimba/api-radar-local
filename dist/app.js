@@ -11,7 +11,10 @@ const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const routes_1 = require("./routes");
 const app = (0, express_1.default)();
 exports.app = app;
-app.use((0, helmet_1.default)());
+app.use((0, helmet_1.default)({
+    contentSecurityPolicy: false, // CSP gerenciado pelo frontend
+    crossOriginEmbedderPolicy: false,
+}));
 const allowedOrigins = [
     'http://localhost:5173',
     'https://radar-local-beta.vercel.app'
@@ -31,7 +34,7 @@ app.use((0, cors_1.default)({
 }));
 const limiterGeral = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
-    max: 200,
+    max: process.env.NODE_ENV === "production" ? 200 : 2000,
     standardHeaders: true,
     legacyHeaders: false,
     message: { message: "Muitas requisições. Tente novamente em alguns minutos." },
