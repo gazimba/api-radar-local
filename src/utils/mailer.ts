@@ -13,7 +13,7 @@ export async function enviarEmailResetSenha(email: string, nome: string, token: 
     const url = `${process.env.FRONTEND_URL}redefinir-senha?token=${token}`;
 
     await transporter.sendMail({
-        from: '"Radar Local" <noreply@radar-local.com>',
+        from: process.env.EMAIL_FROM ?? '"Radar Local" <noreply@radar-local.com>',
         to: email,
         subject: "Redefinição de senha — Radar Local",
         html: `
@@ -33,7 +33,7 @@ export async function enviarEmailResetSenha(email: string, nome: string, token: 
 
 export async function enviarEmailSugestaoAprovada(email: string, nome: string, nomeSugestao: string) {
     await transporter.sendMail({
-        from: '"Radar Local" <noreply@radar-local.com>',
+        from: process.env.EMAIL_FROM ?? '"Radar Local" <noreply@radar-local.com>',
         to: email,
         subject: "Sua sugestão foi aprovada! — Radar Local",
         html: `
@@ -51,7 +51,7 @@ export async function enviarEmailSugestaoAprovada(email: string, nome: string, n
 
 export async function enviarEmailSugestaoRejeitada(email: string, nome: string, nomeSugestao: string) {
     await transporter.sendMail({
-        from: '"Radar Local" <noreply@radar-local.com>',
+        from: process.env.EMAIL_FROM ?? '"Radar Local" <noreply@radar-local.com>',
         to: email,
         subject: "Atualização sobre sua sugestão — Radar Local",
         html: `
@@ -71,7 +71,7 @@ export async function enviarEmailAtivacao(email: string, nome: string, token: st
     const url = `${process.env.FRONTEND_URL}ativar?token=${token}`;
 
     await transporter.sendMail({
-        from: '"Radar Local" <noreply@radar-local.com>',
+        from: process.env.EMAIL_FROM ?? '"Radar Local" <noreply@radar-local.com>',
         to: email,
         subject: "Ative sua conta no Radar Local",
         html: `
