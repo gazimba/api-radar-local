@@ -28,7 +28,9 @@ class PasswordResetController {
             data: { tokenResetSenha: token, tokenResetExpira: expira },
         });
 
-        await enviarEmailResetSenha(user.email, user.nome, token);
+        enviarEmailResetSenha(user.email, user.nome, token).catch(err =>
+            console.error("[mailer] Erro ao enviar email de reset:", err)
+        );
 
         return response.json({ message: "Se este e-mail estiver cadastrado, você receberá as instruções em breve." });
     }

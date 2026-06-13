@@ -35,7 +35,9 @@ class UsuariosController {
             },
         });
 
-        await enviarEmailAtivacao(email, nome, tokenAtivacao);
+        enviarEmailAtivacao(email, nome, tokenAtivacao).catch(err =>
+            console.error("[mailer] Erro ao enviar email de ativacao:", err)
+        );
 
         return response.status(201).json({
             message: "Conta criada! Verifique seu e-mail para ativar o acesso.",
