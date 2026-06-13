@@ -3,10 +3,12 @@ import nodemailer from "nodemailer";
 export const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST ?? "sandbox.smtp.mailtrap.io",
     port: Number(process.env.EMAIL_PORT ?? 587),
+    secure: false,
     auth: {
         user: process.env.EMAIL_USER ?? process.env.MAILTRAP_USER,
         pass: process.env.EMAIL_PASS ?? process.env.MAILTRAP_PASS,
     },
+    tls: { rejectUnauthorized: false },
 });
 
 export async function enviarEmailResetSenha(email: string, nome: string, token: string) {
